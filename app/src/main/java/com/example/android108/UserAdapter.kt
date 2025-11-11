@@ -7,7 +7,7 @@ import com.example.android108.databinding.UserViewBinding
 import com.example.android108.db.UserEntity
 
 class UserAdapter(
-    private val userList: List<UserEntity>
+    private val userList: MutableList<UserEntity>
 ): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -34,5 +34,10 @@ class UserAdapter(
         fun bind(user: UserEntity){
             binding.username.text = user.username
         }
+    }
+
+    fun removeAt(position: Int){
+        userList.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

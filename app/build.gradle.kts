@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.room.common.jvm)
     val room_version = "2.8.3"
 
     //Room
