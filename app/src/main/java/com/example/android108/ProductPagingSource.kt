@@ -1,5 +1,6 @@
 package com.example.android108
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.android108.api.ApiService
@@ -24,6 +25,7 @@ class ProductPagingSource(
             val response = apiService.getPaginatedProducts(limit, skip)
             val products = response.body()?.products?.filterNotNull() ?: emptyList()
 
+            Log.d("TAG", "load: $products")
             LoadResult.Page(
                 data = products,
                 prevKey = if (page == 0) null else page - 1 ,
