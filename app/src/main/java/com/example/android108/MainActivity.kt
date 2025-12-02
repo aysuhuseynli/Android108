@@ -31,33 +31,5 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        val apiService = RetrofitInstance.getInstance().create(ApiService::class.java)
-//
-//        val adapter = PaginatedProductAdapter()
-//        binding.recyclerView.adapter = adapter
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//
-//        Log.d("TAG", "onCreate1: ")
-//
-//        val pager = Pager(
-//            config = PagingConfig(
-//                pageSize = 10,
-//                enablePlaceholders = false
-//            ),
-//            pagingSourceFactory = { ProductPagingSource(apiService)}
-//        )
-//
-//        Log.d("TAG", "onCreate: ${pager.liveData.value}")
-//        lifecycleScope.launch {
-//            Log.d("TAG", "onCreate:")
-//            pager.flow.collect { adapter.submitData(it) }
-//        }
-//        lifecycleScope.launch {
-//            adapter.addLoadStateListener { loadStates ->
-//                binding.progressBar.isVisible = loadStates.refresh is LoadState.Loading
-//                binding.progressBar.isVisible = loadStates.append is LoadState.Loading
-//            }
-//        }
     }
 }

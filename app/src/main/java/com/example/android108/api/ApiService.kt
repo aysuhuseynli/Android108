@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("products")
+    @GET("auth/products")
     suspend fun getPaginatedProducts(
         @Query("limit") limit: Int,
         @Query("skip") skip: Int
