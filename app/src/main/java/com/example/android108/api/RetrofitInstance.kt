@@ -16,9 +16,17 @@ object RetrofitInstance {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
+        val baseBuilder = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = baseBuilder.create(ApiService::class.java)
+
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(AuthInterceptor(tokenStorage))
+            .authenticator(TokenAuthenticator(apiService,tokenStorage))
             .build()
 
         return Retrofit.Builder()
