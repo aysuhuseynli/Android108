@@ -6,12 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.android108.api.ApiService
 import com.example.android108.api.RetrofitInstance
 import com.example.android108.databinding.FragmentLoginBinding
 import com.example.android108.model.AuthRequestBody
+import com.example.android108.model.AuthResponse
+import com.example.android108.viewmodel.LoginViewModel
+import com.example.android108.viewmodel.LoginViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,7 +24,9 @@ import kotlinx.coroutines.withContext
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var viewModel: LoginViewModel
     private lateinit var tokenStorage: TokenStorage
+    private var data: AuthResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +44,35 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tokenStorage = TokenStorage(requireContext())
+        val apiService = RetrofitInstance.getInstance(requireContext()).create(ApiService::class.java)
+
+        viewModel= ViewModelProvider.create(
+            this,
+            LoginViewModelFactory(apiService, tokenStorage)
+        )[LoginViewModel::class]
 
         binding.submitBtn.setOnClickListener {
             val username = binding.username.text.toString()
             val password = binding.password.text.toString()
-            val apiService = RetrofitInstance.getInstance(requireContext()).create(ApiService::class.java)
-            val loginRequest = AuthRequestBody(password = password, username = username)
 
-            lifecycleScope.launch(Dispatchers.IO) {
-                val response = apiService.login(loginRequest = loginRequest)
-                if (response.isSuccessful){
-                    val data = response.body()
-                    data?.let {
-                        tokenStorage.setTokens(it.accessToken!!, it.refreshToken!!)
-                    }
+            viewModel.login(password, username)
+        }
+
+        observeLoginState()
+    }
+
+    fun observeLoginState(){
+        viewModel.loginState.observe(viewLifecycleOwner) { state ->
+            when(state){
+                is UIState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-                withContext(Dispatchers.Main){
+                is UIState.Success -> {
+                    binding.progressBar.visibility = View.GONE
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                }
+                is UIState.Error -> {
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }

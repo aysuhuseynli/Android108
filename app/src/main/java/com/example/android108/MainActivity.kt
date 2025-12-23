@@ -33,16 +33,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-
-        val accessToken = TokenStorage(this).getAccessToken()
-        val startDestination = if (accessToken != null) R.id.homeFragment else R.id.loginFragment
-        Log.d("TAG", "onCreate: accessToken: $accessToken")
-
-        navGraph.setStartDestination(startDestination)
-        navController.graph = navGraph
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+//        val navController = navHostFragment.navController
+//        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+//
+//        val accessToken = TokenStorage(this).getAccessToken()
+//        val startDestination = if (accessToken != null) R.id.homeFragment else R.id.loginFragment
+//        Log.d("TAG", "onCreate: accessToken: $accessToken")
+//
+//        navGraph.setStartDestination(startDestination)
+//        navController.graph = navGraph
     }
 }
