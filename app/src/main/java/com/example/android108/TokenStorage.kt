@@ -3,8 +3,10 @@ package com.example.android108
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class TokenStorage(context: Context) {
+class TokenStorage @Inject constructor(@ApplicationContext context: Context) {
     private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
     fun setTokens(accessToken: String?, refreshToken: String?) {

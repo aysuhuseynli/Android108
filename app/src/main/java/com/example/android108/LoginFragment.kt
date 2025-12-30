@@ -7,26 +7,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.android108.api.ApiRepository
 import com.example.android108.api.ApiService
-import com.example.android108.api.RetrofitInstance
 import com.example.android108.databinding.FragmentLoginBinding
 import com.example.android108.model.AuthRequestBody
 import com.example.android108.model.AuthResponse
 import com.example.android108.viewmodel.LoginViewModel
-import com.example.android108.viewmodel.LoginViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    val viewModel: LoginViewModel by viewModels()
     private lateinit var tokenStorage: TokenStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,16 +44,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        tokenStorage = TokenStorage(requireContext())
-        val apiService =
-            RetrofitInstance.getInstance(requireContext()).create(ApiService::class.java)
-        val apiRepository = ApiRepository(apiService)
-
-        viewModel = ViewModelProvider.create(
-            this,
-            LoginViewModelFactory(apiRepository, tokenStorage)
-        )[LoginViewModel::class]
 
         binding.submitBtn.setOnClickListener {
             val username = binding.username.text.toString()
@@ -73,7 +64,7 @@ class LoginFragment : Fragment() {
 
                 is UIState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+//                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
 
                 is UIState.Error -> {

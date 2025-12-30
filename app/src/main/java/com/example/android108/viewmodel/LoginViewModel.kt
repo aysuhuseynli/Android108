@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.android108.TokenStorage
 import com.example.android108.UIState
 import com.example.android108.api.ApiRepository
-import com.example.android108.api.ApiService
 import com.example.android108.model.AuthRequestBody
 import com.example.android108.model.AuthResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     val apiRepository: ApiRepository,
     val tokenStorage: TokenStorage
 ) : ViewModel() {

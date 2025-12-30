@@ -18,11 +18,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android108.api.ApiService
-import com.example.android108.api.RetrofitInstance
 import com.example.android108.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
