@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.android108.api.ApiRepository
 import com.example.android108.api.ApiService
 import com.example.android108.api.RetrofitInstance
 import com.example.android108.databinding.FragmentLoginBinding
@@ -46,10 +47,11 @@ class LoginFragment : Fragment() {
         tokenStorage = TokenStorage(requireContext())
         val apiService =
             RetrofitInstance.getInstance(requireContext()).create(ApiService::class.java)
+        val apiRepository = ApiRepository(apiService)
 
         viewModel = ViewModelProvider.create(
             this,
-            LoginViewModelFactory(apiService, tokenStorage)
+            LoginViewModelFactory(apiRepository, tokenStorage)
         )[LoginViewModel::class]
 
         binding.submitBtn.setOnClickListener {
