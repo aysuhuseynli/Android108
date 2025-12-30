@@ -10,7 +10,13 @@ import com.example.android108.api.ApiService
 import com.example.android108.model.AuthRequestBody
 import com.example.android108.model.AuthResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel(
     val apiService: ApiService,
@@ -25,7 +31,9 @@ class LoginViewModel(
         viewModelScope.launch {
             val loginRequest = AuthRequestBody(password, username)
             try {
-                val response = apiService.login(loginRequest)
+                val response = withContext(Main){
+                    apiService.login(loginRequest)
+                }
                 if (response.isSuccessful) {
                     val data = response.body()
                     tokenStorage.setTokens(data?.accessToken!!, data.refreshToken!!)
